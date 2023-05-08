@@ -38,7 +38,7 @@ MAGICIAN_WALK_IZ2.convert_alpha()
 #endregion
 
 #Musiquita
-pygame.mixer.music.play(-1)
+# pygame.mixer.music.play(-1)
 
 # Bucle principal
 while True:
@@ -72,9 +72,6 @@ while True:
     for i in identidades:
         if isinstance(i,BolaFuego):
             i.trayectoria()
-            print(i.x, i.y)
-            pantalla.blit(i.current_sprite, i.rect())
-            i.dibujar(pantalla)
 
     # Actualizar estado del mago
     magoenemigo.limites()
@@ -96,4 +93,10 @@ while True:
     pantalla.blit(bola.current_sprite, bola.rect())
     pantalla.blit(magoenemigo.current_sprite, magoenemigo.rect())
     pantalla.blit(soldao.current_sprite, soldao.rect())
+    
+    for i in identidades:
+        if isinstance(i,BolaFuego):
+            i.dibujar(pantalla)
+
     pygame.display.flip()
+    #print(reloj)

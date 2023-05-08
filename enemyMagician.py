@@ -37,9 +37,8 @@ class MagoEnemigo (Identidad):
         self.ciclarSprites()
 
         difX = identidad.x - self.x
-        difY = identidad.y - self.y
-        umbral = 10
-        distancia_ataque = 50
+        umbral = 50
+        distancia_ataque = 10
 
         ahora = pygame.time.get_ticks()
         if self.atacando and (ahora - self.tiempo_ataque) >= self.tiempo_ataque_max:

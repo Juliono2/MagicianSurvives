@@ -86,7 +86,7 @@ while True:
     
     #Movimiento enemigos
     for i in magosenemigos:
-        i.perseguir(mago)
+        i.moverse(mago)
 
     for i in soldadosenemigos:
         i.perseguir(mago)
@@ -96,6 +96,7 @@ while True:
         if(int(i.current_sprite_index) != i.current_sprite_Aux and i.atacando and i.current_sprite_Aux ==0):
             bolaF = BolaFuego(i)
             fuegoEnemigo.append(bolaF)
+            i.atacando = False
         i.current_sprite_Aux = int(i.current_sprite_index)
     
     #Disparos del Mago

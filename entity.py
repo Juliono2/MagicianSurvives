@@ -32,7 +32,7 @@ class Identidad:
     def ciclarSprites(self):
 
         if self.direccion_actual in self.sprites:
-            self.current_sprite_index = (self.current_sprite_index + 0.2) % len(self.sprites[self.direccion_actual])
+            self.current_sprite_index = (self.current_sprite_index + 0.1) % len(self.sprites[self.direccion_actual])
             self.current_sprite = self.sprites[self.direccion_actual][int(self.current_sprite_index)]
 
         else:

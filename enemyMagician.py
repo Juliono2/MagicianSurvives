@@ -14,28 +14,30 @@ class MagoEnemigo (Identidad):
         self.velocidadX = 0
         self.velocidadY = 0
         self.velocidadMax = 5
+        self.paseando = False
         self.atacando = False
-        self.tiempo_ataque = 0 
+        self.tiempo_ataque = 100 
         self.tiempo_ataque_max = 100
         self.direccion_antes_ataque = 'front'
 
     def moverse(self, identidad):
-        if self.direccion_antes_ataque == 'left':
-            self.velocidadX *= -1
-        elif self.direccion_antes_ataque == 'right':
-            self.velocidadX *= -1
+        self.ciclarSprites()
+        if not self.paseando:
+            self.perseguir(identidad)
         else:
-            self.velocidadX = 0
-
+            self.direccion_actual = self.direccion_antes_ataque
+            if self.direccion_antes_ataque == 'left': 
+                self.velocidadX = -self.velocidadMax/15
+            else:
+                self.velocidadX = self.velocidadMax/15
+            
+            # Verificar si se ha llegado a un límite
+            if self.x - 1 < LIMITE_IZQ or self.x + self.hitAncho +1 > LIMITE_DER: self.paseando = False
+        
+        # Actualizar la posición del mago enemigo
         self.x += self.velocidadX
 
-        # Verificar si se ha llegado a un límite
-        if self.x < LIMITE_IZQ or self.x + self.hitAncho > LIMITE_DER:
-            self.perseguir(identidad)  # Llamar a la función perseguir para volver a buscar al enemigo
-            return
-
     def perseguir(self, identidad):
-        self.ciclarSprites()
 
         difX = abs(identidad.x - self.x)
         difX -= self.hitAncho/2 if identidad.x > self.x else identidad.hitAncho/2
@@ -54,13 +56,21 @@ class MagoEnemigo (Identidad):
                 self.velocidadX = self.velocidadMax/15
                 self.direccion_actual = "right"
 
-        # Actualizar la posición del mago enemigo
-        self.x += self.velocidadX
-
     def atacar(self):
-        self.atacando = True
-        self.direccion_actual = 'atackdown'
-        self.tiempo_ataque = pygame.time.get_ticks()
+        self.tiempo_ataque += 1
+        if not self.atacando:
+            if self.tiempo_ataque >= self.tiempo_ataque_max:
+                self.direccion_antes_ataque = self.direccion_actual
+                self.tiempo_ataque = 0
+            self.direccion_actual = 'atackdown'
+            self.atacando = True
+
+        print(self.tiempo_ataque)
+        if self.atacando and (self.tiempo_ataque) >= self.tiempo_ataque_max:
+            self.atacando = False # desactivar el estado de ataque si ha pasado el tiempo máximo permitido
+            self.paseando = True
+            if self.direccion_actual == 'atackdown':
+                self.direccion_actual = 'front'
 
     def ciclarSprites(self):
         if self.direccion_actual in ['right', 'left']:

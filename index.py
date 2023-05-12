@@ -52,6 +52,11 @@ ultimoSoldao = 0
 pygame.mixer.music.play(-1)
 DERROTA = pygame.USEREVENT+1
 
+#Score
+score = 0
+enemigos = 0
+inicio = pygame.time.get_ticks()
+
 #Variable Derrota
 perdiste = False
 
@@ -70,6 +75,24 @@ while True:
         if (event.type == DERROTA):
             if(CANAL1.get_busy() or CANAL1.get_queue()!=None):
                 break
+
+            # Guardar Score
+            score = int((pygame.time.get_ticks() - inicio) / 1000) * enemigos
+            scores = []
+
+            with open("highscore.txt","r") as file:
+                for linea in file:
+                    preScore =int(linea.split("=")[1])
+                    if(score > preScore):
+                        scores.append(score)
+                        score = preScore
+                    else: 
+                        scores.append(preScore)
+
+
+            with open("highscore.txt","w") as file:
+                for scr in scores:
+                    file.write("Score = " + (str)(scr) + "\n")
 
             #Salir
             pygame.quit()
@@ -147,6 +170,7 @@ while True:
                 i.reproducirSonido(FIREBALL_SOUNDS[1])
                 fuego.remove(i)
                 magosenemigos.remove(j)
+                enemigos += 1
                 break
 
         
@@ -155,6 +179,7 @@ while True:
                 i.reproducirSonido(FIREBALL_SOUNDS[1])  
                 fuego.remove(i)
                 soldadosenemigos.remove(j)
+                enemigos += 1
                 break
 
     # Ataques Enemigos

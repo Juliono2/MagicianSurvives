@@ -6,22 +6,24 @@ from entity import Identidad
 class BolaFuego (Identidad):
     def __init__(self, identidad, sprites=BOLA_FUEGO_SPRITE): 
         super().__init__(BOLA_FUEGO_SPRITE, identidad, identidad.x, identidad.y)
-        self.current_sprite = sprites['atackleft'][0]
+        self.direccion_actual = identidad.direccion_actual
+        self.current_sprite = sprites[identidad.direccion_actual][0]
         self.current_sprite_index = 0
-        self.o_velocidad = 30
-        self.velocidad = self.o_velocidad
-        self.dirDisparo = identidad.direccion_actual
+        self.velocidadX = 0
+        self.velocidadY = 0
+
+        if identidad.direccion_actual == 'atackleft':
+            self.velocidadX = -5
+        elif identidad.direccion_actual == 'atackright':
+            self.velocidadX = 5
+        elif identidad.direccion_actual == 'atackdown':
+            self.velocidadY = 5
+        elif identidad.direccion_actual == 'atackup':
+            self.velocidadY = -5
 
     def trayectoria(self):
-        if self.dirDisparo == 'atackleft':
-            self.x -= self.velocidad
-        elif self.dirDisparo == 'atackright':
-            self.x += self.velocidad
-        elif self.dirDisparo == 'atackdown':
-            self.y += self.velocidad
-        elif self.dirDisparo == 'atackup':
-            self.y -= self.velocidad
-
+        self.x += self.velocidadX
+        self.y += self.velocidadY
         self.ciclarSprites()
 
     def limites(self):

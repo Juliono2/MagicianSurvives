@@ -8,6 +8,7 @@ class MagoEnemigo (Identidad):
         super().__init__(MAGO_ENEMIGO_SPRITES, identidad, x, y)
         self.current_sprite = sprites['front'][0]
         self.current_sprite_index = 0
+        self.current_sprite_Aux = 0
         self.distancia=DISTANCIA_PRED_MAGO_ENEMIGO
         self.caminando = False
         self.velocidadX = 0
@@ -36,48 +37,29 @@ class MagoEnemigo (Identidad):
     def perseguir(self, identidad):
         self.ciclarSprites()
 
-        difX = identidad.x - self.x
-        umbral = 50
-        distancia_ataque = 10
+        difX = abs(identidad.x - self.x)
+        difX -= self.hitAncho/2 if identidad.x > self.x else identidad.hitAncho/2
+        #umbral = 50
+        distancia_ataque = 0
 
-        ahora = pygame.time.get_ticks()
-        if self.atacando and (ahora - self.tiempo_ataque) >= self.tiempo_ataque_max:
-            self.atacando = False # desactivar el estado de ataque si ha pasado el tiempo máximo permitido
-            if self.direccion_actual == 'atackdown':
-                self.direccion_actual = 'front'
-        
-        # Obtener la dirección en la que se mueve el mago enemigo (izquierda o derecha)
-        if self.velocidadX > 0:
-            self.direccion_actual = 'right'
-        elif self.velocidadX < 0:
-            self.direccion_actual = 'left'
-        else:
-            self.direccion_actual = 'front'
-        
-        # Moverse hacia la derecha o hacia la izquierda según corresponda
-        if abs(difX) > umbral:
-            if self.direccion_actual == 'left' and difX > 0:
-                self.velocidadX *= -1
-            elif self.direccion_actual == 'right' and difX < 0:
-                self.velocidadX *= -1
-            self.velocidadX = min(abs(difX), self.velocidadMax/15) * numpy.sign(difX)
-        else:
-            self.velocidadX = 0
-        
-        # Si la distancia entre el mago enemigo y la identidad es menor o igual que la distancia de ataque, atacar
-        if abs(difX) <= distancia_ataque:
-            self.direccion_antes_ataque = self.direccion_actual
+        if difX <= distancia_ataque or self.atacando:
+            
             self.atacar()
-            self.moverse(identidad)
+            self.velocidadX = 0
+        else:
+            if self.x > identidad.x: 
+                self.velocidadX = -self.velocidadMax/15
+                self.direccion_actual = "left"
+            else:
+                self.velocidadX = self.velocidadMax/15
+                self.direccion_actual = "right"
 
         # Actualizar la posición del mago enemigo
         self.x += self.velocidadX
 
     def atacar(self):
         self.atacando = True
-        if self.direccion_actual == 'front':
-            self.direccion_actual = 'atackdown'
-        
+        self.direccion_actual = 'atackdown'
         self.tiempo_ataque = pygame.time.get_ticks()
 
     def ciclarSprites(self):

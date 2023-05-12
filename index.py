@@ -18,9 +18,12 @@ pygame.display.set_caption("Magician Survives")
 mago = Mago()
 magoenemigo = MagoEnemigo(mago)
 soldao = Soldado(mago)
-bola = BolaFuego(mago)
 
-identidades = [mago]
+fuego = []
+magosenemigos = [magoenemigo]
+soldadosenemigos = [soldao]
+fuegoEnemigo = []
+
 space_key_down = False
 
 #region
@@ -64,23 +67,65 @@ while True:
 
     if keys[pygame.K_SPACE] and not space_key_down:
         mago.atacar()
-        identidades.append(BolaFuego(mago))
+        bolaF = BolaFuego(mago)
+        fuego.append(bolaF)
         space_key_down = True
     elif not keys[pygame.K_SPACE]:
         space_key_down = False
 
-    for i in identidades:
-        if isinstance(i,BolaFuego):
-            i.trayectoria()
 
     # Actualizar estado del mago
-    magoenemigo.limites()
-    soldao.limites()
+    for i in magosenemigos:
+        i.limites()
+
+    for i in soldadosenemigos:
+        i.limites()
+
     mago.limites()
 
-    bola.trayectoria()
-    soldao.perseguir(mago)
-    magoenemigo.perseguir(mago)
+    
+    #Movimiento enemigos
+    for i in magosenemigos:
+        i.perseguir(mago)
+
+    for i in soldadosenemigos:
+        i.perseguir(mago)
+
+    #Disparo de magos enemigos
+    for i in magosenemigos:
+        if(int(i.current_sprite_index) != i.current_sprite_Aux and i.atacando and i.current_sprite_Aux ==0):
+            bolaF = BolaFuego(i)
+            fuegoEnemigo.append(bolaF)
+        i.current_sprite_Aux = int(i.current_sprite_index)
+    
+    #Disparos del Mago
+    for i in fuego: 
+        i.trayectoria()
+        for j in magosenemigos:
+            if(j.rect().colliderect(i.rect())):
+                fuego.remove(i)
+                magosenemigos.remove(j)
+                break
+
+        
+        for j in soldadosenemigos:
+            if(j.rect().colliderect(i.rect())):
+                fuego.remove(i)
+                soldadosenemigos.remove(j)
+                break
+
+    # Ataques Enemigos
+    for i in fuegoEnemigo:
+        i.trayectoria()    
+        if(mago.rect().colliderect(i.rect())):
+            fuegoEnemigo.remove(i)
+
+            print("derrota")
+            
+    for i in soldadosenemigos:
+        if(mago.rect().colliderect(i.rect())):
+            
+            print("derrota")
 
     mago.actualizar()
 
@@ -89,14 +134,17 @@ while True:
     pantalla.blit(NUBE,(0,65))
     pantalla.blit(NUBE,(266,65))
     pantalla.blit(NUBE,(533,65))
+
     pantalla.blit(mago.current_sprite, mago.rect())
-    pantalla.blit(bola.current_sprite, bola.rect())
-    pantalla.blit(magoenemigo.current_sprite, magoenemigo.rect())
-    pantalla.blit(soldao.current_sprite, soldao.rect())
+    for i in magosenemigos:
+        pantalla.blit(i.current_sprite, i.rect())
     
-    for i in identidades:
-        if isinstance(i,BolaFuego):
-            i.dibujar(pantalla)
+    for i in soldadosenemigos:
+        pantalla.blit(i.current_sprite, i.rect())
+    
+    for i in fuego: i.dibujar(pantalla)
+
+    for i in fuegoEnemigo: i.dibujar(pantalla)  
 
     pygame.display.flip()
     #print(reloj)

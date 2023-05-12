@@ -2,6 +2,7 @@ import numpy
 from settings import *
 from routes import *
 from entity import Identidad
+import random
 
 class Soldado(Identidad):
     def __init__(self, identidad, sprites=SOLDADO_ENEMIGO_SPRITES, x=0, y=300): 
@@ -30,14 +31,6 @@ class Soldado(Identidad):
         umbral = 10
         distancia_ataque = 100
         distancia_matasion = 20
-
-        ahora = pygame.time.get_ticks()
-        if self.atacando and (ahora - self.tiempo_ataque) >= self.tiempo_ataque_max:
-            self.atacando = False 
-            if self.direccion_actual == 'atackleft':
-                self.direccion_actual = 'left'
-            elif self.direccion_actual == 'atackright':
-                self.direccion_actual = 'right'
         
         # Obtener la dirección en la que se mueve el mago enemigo (izquierda o derecha)
         if self.velocidadX > 0:
@@ -69,13 +62,20 @@ class Soldado(Identidad):
         self.x += self.velocidadX
 
     def atacar(self):
+        if(not self.atacando):
+            print("suena")
+            self.tiempo_ataque = pygame.time.get_ticks()
+
         self.atacando = True
         if self.direccion_actual == 'left':
             self.direccion_actual = 'atackleft'
         elif self.direccion_actual == 'right':
             self.direccion_actual = 'atackright'
         
-        self.tiempo_ataque = pygame.time.get_ticks()
+        ahora = pygame.time.get_ticks()
+        if (ahora - self.tiempo_ataque) == 0:
+            atac = random.randint(0,len(LANCER_SOUNDS) - 2)
+            self.reproducirSonido(LANCER_SOUNDS[atac])
 
     def spawneo(self):
         if(int(self.current_sprite_index) != self.current_sprite_aux and self.current_sprite_aux ==8):

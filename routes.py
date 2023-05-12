@@ -64,7 +64,7 @@ MAGO_ENEMIGO_SPRITES = {
     'right': [ENEMY_MAGICIAN_WALK_DE1, ENEMY_MAGICIAN_WALK_DE2],
     'left': [ENEMY_MAGICIAN_WALK_IZ1, ENEMY_MAGICIAN_WALK_IZ2],
     'down': [ENEMY_MAGICIAN_ATACK1],
-    'atackdown': [ENEMY_MAGICIAN_ATACK1,ENEMY_MAGICIAN_ATACK2,ENEMY_MAGICIAN_ATACK1]
+    'atackdown': [ENEMY_MAGICIAN_ATACK1,ENEMY_MAGICIAN_ATACK2]
 }
 
 #Lancero (derecha a izquierda) enemigo caminao
@@ -86,7 +86,7 @@ ENEMY_LANCER_ATACK_IZ2 = pygame.image.load(os.path.join('assets','Sprites','Enem
 
 #Diccionario de estados de los sprites de soldado enemigo
 SOLDADO_ENEMIGO_SPRITES ={
-    'spaw' : SPAWNLIST,
+    'spaw':SPAWNLIST,
     'front':SPAWNLIST,
     'left':[ENEMY_LANCER_WALK_DE1,ENEMY_LANCER_WALK_DE2],
     'right':[ENEMY_LANCER_WALK_IZ1,ENEMY_LANCER_WALK_IZ2],
@@ -132,9 +132,10 @@ LANCER_SOUND1 = pygame.mixer.Sound(os.path.join('assets','Sounds','LancerosAtaqu
 LANCER_SOUND2 = pygame.mixer.Sound(os.path.join('assets','Sounds','LancerosAtaque2.mp3'))
 IMPACT_FIREBALL = pygame.mixer.Sound(os.path.join('assets','Sounds','ImpactoBolaFuego.mp3'))
 IMPACT_LANCE = pygame.mixer.Sound(os.path.join('assets','Sounds','ImpactoLancero.mp3'))
-FIREBALL_SOUNDS = [FIREBALL_SOUND1,FIREBALL_SOUND2]
-LANCER_SOUNDS = [LANCER_SOUND1,LANCER_SOUND2]
+FIREBALL_SOUNDS = [FIREBALL_SOUND2,FIREBALL_SOUND1]
+LANCER_SOUNDS = [LANCER_SOUND1,LANCER_SOUND2,IMPACT_LANCE]
+ENEMY_MAGICIAN_SOUNDS = [FIREBALL_SOUND2,IMPACT_FIREBALL]
 #CANALES
+pygame.mixer.set_reserved(2)
 CANAL1 = pygame.mixer.Channel(0)
 CANAL2 = pygame.mixer.Channel(1)
-CANAL3 = pygame.mixer.Channel(2)

@@ -55,3 +55,12 @@ class Identidad:
     def aumenVel(self, nivel):
         self.velocidad = self.o_velocidad + (self.o_velocidad * nivel / 4)
 
+    def reproducirSonido(self,sonido:pygame.mixer.Sound):
+        canal = pygame.mixer.find_channel()
+        if canal is not None:
+            canal.play(sonido)
+        else:
+            pygame.mixer.set_num_channels(pygame.mixer.get_num_channels() + 1)
+            canal = pygame.mixer.find_channel()
+            print(canal)
+            canal.play(sonido)

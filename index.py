@@ -16,12 +16,10 @@ pygame.display.set_caption("Magician Survives")
 
 # Crear instancia del mago
 mago = Mago()
-magoenemigo = MagoEnemigo(mago)
-soldao = Soldado(mago)
 
 fuego = []
-magosenemigos = [magoenemigo]
-soldadosenemigos = [soldao]
+magosenemigos = []
+soldadosenemigos = []
 fuegoEnemigo = []
 
 space_key_down = False
@@ -40,6 +38,16 @@ MAGICIAN_ATACK_IZ1.convert_alpha()
 MAGICIAN_WALK_IZ2.convert_alpha() 
 #endregion
 
+#Constanes Spaw
+spawmago = 1000
+spawSoldao = 1000
+
+#Variables Spaw
+timeMago = spawmago
+ultimoMago = 0
+timeSoldao = spawSoldao
+ultimoSoldao = 0
+
 #Musiquita
 # pygame.mixer.music.play(-1)
 
@@ -53,8 +61,23 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
-     
-     # Obtener el estado actual del teclado
+
+    #Spaw enemigos
+    if(timeMago -ultimoMago >= spawmago):
+        ultimoMago = pygame.time.get_ticks()
+        timeMago = 0
+        magosenemigos.append(MagoEnemigo(mago))
+    else:
+        timeMago = pygame.time.get_ticks()
+
+    if(timeSoldao -ultimoSoldao >= spawSoldao):
+        ultimoSoldao = pygame.time.get_ticks()
+        timeSoldao = 0
+        soldadosenemigos.append(Soldado(mago))
+    else:
+        timeSoldao = pygame.time.get_ticks()
+
+    # Obtener el estado actual del teclado
     keys = pygame.key.get_pressed()
 
     # Mover al mago según la tecla presionada
@@ -93,11 +116,11 @@ while True:
 
     #Disparo de magos enemigos
     for i in magosenemigos:
-        if(int(i.current_sprite_index) != i.current_sprite_Aux and i.atacando and i.current_sprite_Aux ==0):
+        if(int(i.current_sprite_index) != i.current_sprite_aux and i.atacando and i.current_sprite_aux ==0):
             bolaF = BolaFuego(i)
             fuegoEnemigo.append(bolaF)
             i.atacando = False
-        i.current_sprite_Aux = int(i.current_sprite_index)
+        i.current_sprite_aux = int(i.current_sprite_index)
     
     #Disparos del Mago
     for i in fuego: 

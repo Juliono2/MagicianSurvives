@@ -6,20 +6,25 @@ from entity import Identidad
 class Soldado(Identidad):
     def __init__(self, identidad, sprites=SOLDADO_ENEMIGO_SPRITES, x=0, y=300): 
         super().__init__(SOLDADO_ENEMIGO_SPRITES, identidad, x, y)
-        self.current_sprite = sprites['front'][0]
+        self.current_sprite = sprites['spaw'][0]
         self.current_sprite_index = 0
+        self.current_sprite_aux = 0
         self.distancia=DISTANCIA_PRED_SOLDADO_ENEMIGO
-        self.caminando = False
         self.velocidadX = 0
         self.velocidadY = 0
         self.velocidadMax = 5
+        self.spaw = True
         self.atacando = False
         self.tiempo_ataque = 0 
         self.tiempo_ataque_max = 100
         self.direccion_antes_ataque = 'front'
+        self.direccion_actual = 'spaw'
 
     def perseguir(self,identidad):
         self.ciclarSprites()
+        if(self.spaw): 
+            self.spawneo()
+            return
 
         difX = identidad.x - self.x
         umbral = 10
@@ -71,4 +76,9 @@ class Soldado(Identidad):
             self.direccion_actual = 'atackright'
         
         self.tiempo_ataque = pygame.time.get_ticks()
+
+    def spawneo(self):
+        if(int(self.current_sprite_index) != self.current_sprite_aux and self.current_sprite_aux ==8):
+            self.spaw = False
+        self.current_sprite_aux = int(self.current_sprite_index)
 

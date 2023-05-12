@@ -6,22 +6,27 @@ from entity import Identidad
 class MagoEnemigo (Identidad):
     def __init__(self, identidad, sprites=MAGO_ENEMIGO_SPRITES, x=0, y=50): 
         super().__init__(MAGO_ENEMIGO_SPRITES, identidad, x, y)
-        self.current_sprite = sprites['front'][0]
+        self.current_sprite = sprites['spaw'][0]
         self.current_sprite_index = 0
-        self.current_sprite_Aux = 0
+        self.current_sprite_aux = 0
         self.distancia=DISTANCIA_PRED_MAGO_ENEMIGO
-        self.caminando = False
         self.velocidadX = 0
         self.velocidadY = 0
         self.velocidadMax = 5
+        self.spaw = True
         self.paseando = False
         self.atacando = False
         self.tiempo_ataque = 100 
         self.tiempo_ataque_max = 100
         self.direccion_antes_ataque = 'front'
+        self.direccion_actual = 'spaw'
 
     def moverse(self, identidad):
         self.ciclarSprites()
+        if(self.spaw): 
+            self.spawneo()
+            return
+    
         if not self.paseando:
             self.perseguir(identidad)
         else:
@@ -65,7 +70,6 @@ class MagoEnemigo (Identidad):
             self.direccion_actual = 'atackdown'
             self.atacando = True
 
-        print(self.tiempo_ataque)
         if self.atacando and (self.tiempo_ataque) >= self.tiempo_ataque_max:
             self.atacando = False # desactivar el estado de ataque si ha pasado el tiempo máximo permitido
             self.paseando = True
@@ -73,10 +77,14 @@ class MagoEnemigo (Identidad):
                 self.direccion_actual = 'front'
 
     def ciclarSprites(self):
-        if self.direccion_actual in ['right', 'left']:
+        if self.direccion_actual in ['right', 'left', 'spaw']:
             return super().ciclarSprites()
         if self.atacando:
             if self.direccion_actual in self.sprites:
                 self.current_sprite_index = (self.current_sprite_index + 0.02) % len(self.sprites[self.direccion_actual])
                 self.current_sprite = self.sprites[self.direccion_actual][int(self.current_sprite_index)]
     
+    def spawneo(self):
+        if(int(self.current_sprite_index) != self.current_sprite_aux and self.current_sprite_aux ==8):
+            self.spaw = False
+        self.current_sprite_aux = int(self.current_sprite_index)

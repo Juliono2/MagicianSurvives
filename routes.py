@@ -45,8 +45,21 @@ ENEMY_MAGICIAN_WALK_IZ2 = pygame.image.load(os.path.join('assets','Sprites','Ene
 ENEMY_MAGICIAN_ATACK1 = pygame.image.load(os.path.join('assets','Sprites','EnemyMagician','AtackFrontEnemyMagician.png'))
 ENEMY_MAGICIAN_ATACK2 = pygame.image.load(os.path.join('assets','Sprites','EnemyMagician','AtackFrontEnemyMagician2.png'))
 
+# Animacion de spawn
+SPAWN1 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn1.png'))
+SPAWN2 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn2.png'))
+SPAWN3 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn3.png'))
+SPAWN4 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn4.png'))
+SPAWN5 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn5.png'))
+SPAWN6 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn6.png'))
+SPAWN7 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn7.png'))
+SPAWN8 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn8.png'))
+SPAWN9 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn9.png'))
+SPAWNLIST = [SPAWN1,SPAWN2,SPAWN3,SPAWN4,SPAWN5,SPAWN6,SPAWN7,SPAWN8,SPAWN9]
+
 #Para cargar sprites del mago enemigo
 MAGO_ENEMIGO_SPRITES = {
+    'spaw' : SPAWNLIST,
     'front': [ENEMY_MAGICIAN_FRONT],
     'right': [ENEMY_MAGICIAN_WALK_DE1, ENEMY_MAGICIAN_WALK_DE2],
     'left': [ENEMY_MAGICIAN_WALK_IZ1, ENEMY_MAGICIAN_WALK_IZ2],
@@ -70,20 +83,10 @@ ENEMY_LANCER_ATACK_DE2 = pygame.image.load(os.path.join('assets','Sprites','Enem
 ENEMY_LANCER_ATACK_IZ1 = pygame.image.load(os.path.join('assets','Sprites','EnemyLancer','AtackIzEnemyLancer.png'))
 ENEMY_LANCER_ATACK_IZ2 = pygame.image.load(os.path.join('assets','Sprites','EnemyLancer','AtackIzEnemyLancer2.png'))
 
-# Animacion de spawn
-SPAWN1 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn1.png'))
-SPAWN2 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn2.png'))
-SPAWN3 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn3.png'))
-SPAWN4 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn4.png'))
-SPAWN5 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn5.png'))
-SPAWN6 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn6.png'))
-SPAWN7 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn7.png'))
-SPAWN8 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn8.png'))
-SPAWN9 = pygame.image.load(os.path.join('assets','Sprites','Spawn','Spawn9.png'))
-SPAWNLIST = [SPAWN1,SPAWN2,SPAWN3,SPAWN4,SPAWN5,SPAWN6,SPAWN7,SPAWN8,SPAWN9]
 
 #Diccionario de estados de los sprites de soldado enemigo
 SOLDADO_ENEMIGO_SPRITES ={
+    'spaw' : SPAWNLIST,
     'front':SPAWNLIST,
     'left':[ENEMY_LANCER_WALK_DE1,ENEMY_LANCER_WALK_DE2],
     'right':[ENEMY_LANCER_WALK_IZ1,ENEMY_LANCER_WALK_IZ2],

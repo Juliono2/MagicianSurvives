@@ -1,4 +1,4 @@
-import pygame
+import pygame, numpy
 from settings import *
 from routes import *
 
@@ -39,8 +39,8 @@ MAGICIAN_WALK_IZ2.convert_alpha()
 #endregion
 
 #Constanes Spaw
-spawmago = 1000
-spawSoldao = 1000
+spawmago = 5000
+spawSoldao = 5000
 
 #Variables Spaw
 timeMago = spawmago
@@ -62,7 +62,7 @@ perdiste = False
 
 # Bucle principal
 while True:
-    
+
     reloj = pygame.time.Clock()
 
     # Manejo de eventos
@@ -77,7 +77,7 @@ while True:
                 break
 
             # Guardar Score
-            score = int((pygame.time.get_ticks() - inicio) / 1000) * enemigos
+            score = int((pygame.time.get_ticks() - inicio) / 1000) * int(numpy.sqrt(enemigos)) * mago.nivel * mago.nivel
             scores = []
 
             with open("highscore.txt","r") as file:
@@ -101,14 +101,14 @@ while True:
     if(perdiste): continue
 
     #Spaw enemigos
-    if(timeMago -ultimoMago >= spawmago):
+    if(timeMago - ultimoMago >= NIVEL[mago.nivel]['Spaw']):
         ultimoMago = pygame.time.get_ticks()
         timeMago = 0
         magosenemigos.append(MagoEnemigo(mago))
     else:
         timeMago = pygame.time.get_ticks()
 
-    if(timeSoldao -ultimoSoldao >= spawSoldao):
+    if(timeSoldao -ultimoSoldao >= NIVEL[mago.nivel]['Spaw']):
         ultimoSoldao = pygame.time.get_ticks()
         timeSoldao = 0
         soldadosenemigos.append(Soldado(mago))
@@ -171,6 +171,7 @@ while True:
                 fuego.remove(i)
                 magosenemigos.remove(j)
                 enemigos += 1
+                mago.enemigosDerrotados += 1
                 break
 
         
@@ -180,6 +181,7 @@ while True:
                 fuego.remove(i)
                 soldadosenemigos.remove(j)
                 enemigos += 1
+                mago.enemigosDerrotados += 1
                 break
 
     # Ataques Enemigos

@@ -13,13 +13,14 @@ class Soldado(Identidad):
         self.distancia=DISTANCIA_PRED_SOLDADO_ENEMIGO
         self.velocidadX = 0
         self.velocidadY = 0
-        self.velocidadMax = 5
+        self.velocidadMax = NIVEL[identidad.nivel]['Velocidad']
         self.spaw = True
         self.atacando = False
         self.tiempo_ataque = 0 
         self.tiempo_ataque_max = 100
         self.direccion_antes_ataque = 'front'
         self.direccion_actual = 'spaw'
+        self.distancia_ataque = 100
 
     def perseguir(self,identidad):
         self.ciclarSprites()
@@ -27,44 +28,33 @@ class Soldado(Identidad):
             self.spawneo()
             return
 
-        difX = identidad.x - self.x
-        umbral = 10
-        distancia_ataque = 100
-        distancia_matasion = 20
-        
-        # Obtener la dirección en la que se mueve el mago enemigo (izquierda o derecha)
-        if self.velocidadX > 0:
-            self.direccion_actual = 'right'
-        elif self.velocidadX < 0:
-            self.direccion_actual = 'left'
-        else:
-            self.direccion_actual = 'front'
-        
-        # Moverse hacia la derecha o hacia la izquierda según corresponda
-        if abs(difX) > umbral:
-            if self.direccion_actual == 'left' and difX > 0:
-                self.velocidadX *= -1
-            elif self.direccion_actual == 'right' and difX < 0:
-                self.velocidadX *= -1
-            self.velocidadX = min(abs(difX), self.velocidadMax/15) * numpy.sign(difX)
-        else:
-            self.velocidadX = 0
-        
-        # Si la distancia entre el mago enemigo y la identidad es menor o igual que la distancia de ataque, atacar
-        if  abs(difX) <= distancia_matasion:
-            self.direccion_actual = self.direccion_antes_ataque
-            self.velocidadX = 0
-        elif abs(difX) <= distancia_ataque:
-            self.direccion_antes_ataque = self.direccion_actual
-            self.atacar()
+        difX = abs(identidad.x - self.x)
+        difX -= self.hitAncho/2 if identidad.x > self.x else identidad.hitAncho/2
+        #umbral = 50
 
-        # Actualizar la posición del mago enemigo
+        velocidad = self.velocidadMax
+
+        if difX <= self.distancia_ataque:
+            
+            self.atacar()
+            velocidad = self.velocidadMax*3/2
+        else:
+            self.atacando = False
+
+        if self.x > identidad.x: 
+            self.velocidadX = -velocidad
+            self.direccion_actual = "left"
+        else:
+            self.velocidadX = velocidad
+            self.direccion_actual = "right"
+
         self.x += self.velocidadX
 
     def atacar(self):
         if(not self.atacando):
-            print("suena")
             self.tiempo_ataque = pygame.time.get_ticks()
+            atac = random.randint(0,len(LANCER_SOUNDS) - 2)
+            self.reproducirSonido(LANCER_SOUNDS[atac])
 
         self.atacando = True
         if self.direccion_actual == 'left':
@@ -72,10 +62,7 @@ class Soldado(Identidad):
         elif self.direccion_actual == 'right':
             self.direccion_actual = 'atackright'
         
-        ahora = pygame.time.get_ticks()
-        if (ahora - self.tiempo_ataque) == 0:
-            atac = random.randint(0,len(LANCER_SOUNDS) - 2)
-            self.reproducirSonido(LANCER_SOUNDS[atac])
+            
 
     def spawneo(self):
         if(int(self.current_sprite_index) != self.current_sprite_aux and self.current_sprite_aux ==8):

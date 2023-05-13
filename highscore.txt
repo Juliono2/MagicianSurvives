@@ -1,9 +1,9 @@
-Score = 0
-Score = 0
-Score = 0
-Score = 0
-Score = 0
-Score = 0
+Score = 1100
+Score = 224
+Score = 63
+Score = 22
+Score = 21
+Score = 12
 Score = 0
 Score = 0
 Score = 0

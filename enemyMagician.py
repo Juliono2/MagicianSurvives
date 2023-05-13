@@ -11,13 +11,12 @@ class MagoEnemigo (Identidad):
         self.current_sprite_aux = 0
         self.distancia=DISTANCIA_PRED_MAGO_ENEMIGO
         self.velocidadX = 0
-        self.velocidadY = 0
-        self.velocidadMax = 5
+        self.velocidadMax = NIVEL[identidad.nivel]['Velocidad']
         self.spaw = True
         self.paseando = False
         self.atacando = False
         self.tiempo_ataque = 100 
-        self.tiempo_ataque_max = 100
+        self.tiempo_ataque_max = NIVEL[identidad.nivel]['TiempoFuego']
         self.direccion_antes_ataque = 'front'
         self.direccion_actual = 'spaw'
 
@@ -32,9 +31,9 @@ class MagoEnemigo (Identidad):
         else:
             self.direccion_actual = self.direccion_antes_ataque
             if self.direccion_antes_ataque == 'left': 
-                self.velocidadX = -self.velocidadMax/15
+                self.velocidadX = -self.velocidadMax
             else:
-                self.velocidadX = self.velocidadMax/15
+                self.velocidadX = self.velocidadMax
             
             # Verificar si se ha llegado a un límite
             if self.x - 1 < LIMITE_IZQ or self.x + self.hitAncho +1 > LIMITE_DER: self.paseando = False
@@ -55,10 +54,10 @@ class MagoEnemigo (Identidad):
             self.velocidadX = 0
         else:
             if self.x > identidad.x: 
-                self.velocidadX = -self.velocidadMax/15
+                self.velocidadX = -self.velocidadMax
                 self.direccion_actual = "left"
             else:
-                self.velocidadX = self.velocidadMax/15
+                self.velocidadX = self.velocidadMax
                 self.direccion_actual = "right"
 
     def atacar(self):

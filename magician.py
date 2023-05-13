@@ -15,6 +15,8 @@ class Mago(Identidad):
         self.atacando = False
         self.tiempo_ataque = 0 
         self.tiempo_ataque_max = 100
+        self.nivel = 0
+        self.enemigosDerrotados = 0
 
     def atacar(self):
         self.atacando = True
@@ -28,6 +30,10 @@ class Mago(Identidad):
         self.tiempo_ataque = pygame.time.get_ticks()
 
     def actualizar(self):
+        if(self.enemigosDerrotados >= NIVEL[0]['Muertes']):
+            self.enemigosDerrotados = 0
+            self.nivel += 1
+            self.reproducirSonido(LEVEL_SOUND)
         self.ciclarSprites()
         if abs(self.velocidadX) <= 0.1 and abs(self.velocidadY) <= 0.1:
             if not self.atacando:

@@ -62,5 +62,4 @@ class Identidad:
         else:
             pygame.mixer.set_num_channels(pygame.mixer.get_num_channels() + 1)
             canal = pygame.mixer.find_channel()
-            print(canal)
             canal.play(sonido)

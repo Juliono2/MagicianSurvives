@@ -20,7 +20,7 @@ FRAME = 1/FPS
 TIEMPO = FPS/400
 
 NIVEL = [
-    {'Muertes':10   , 'Spaw':5000, 'Velocidad': 0.25, 'TiempoFuego': 60},
+    {'Muertes':10   , 'Spaw':5000, 'Velocidad': 0.25, 'TiempoFuego': 30},
     {'Muertes':20   , 'Spaw':3000, 'Velocidad': 0.5 , 'TiempoFuego': 60},
     {'Muertes':40   , 'Spaw':3000, 'Velocidad': 1   , 'TiempoFuego': 120},
     {'Muertes':50   , 'Spaw':2000, 'Velocidad': 2   , 'TiempoFuego': 180},

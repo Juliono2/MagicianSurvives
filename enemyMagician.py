@@ -6,16 +6,19 @@ from entity import Identidad
 class MagoEnemigo (Identidad):
     def __init__(self, identidad, sprites=MAGO_ENEMIGO_SPRITES, x=0, y=50): 
         super().__init__(MAGO_ENEMIGO_SPRITES, identidad, x, y)
+        #Sprites
         self.current_sprite = sprites['spaw'][0]
         self.current_sprite_index = 0
         self.current_sprite_aux = 0
-        self.distancia=DISTANCIA_PRED_MAGO_ENEMIGO
+        #Velocidad
         self.velocidadX = 0
         self.velocidadMax = NIVEL[identidad.nivel]['Velocidad']
+        #Estados
         self.spaw = True
         self.paseando = False
         self.atacando = False
-        self.tiempo_ataque = 100 
+        #Ataque
+        self.tiempo_ataque = NIVEL[len(NIVEL) - 1]['TiempoFuego']
         self.tiempo_ataque_max = NIVEL[identidad.nivel]['TiempoFuego']
         self.direccion_antes_ataque = 'front'
         self.direccion_actual = 'spaw'
@@ -29,6 +32,7 @@ class MagoEnemigo (Identidad):
         if not self.paseando:
             self.perseguir(identidad)
         else:
+            #retomar dirreccion que tenia antes de atacar
             self.direccion_actual = self.direccion_antes_ataque
             if self.direccion_antes_ataque == 'left': 
                 self.velocidadX = -self.velocidadMax
@@ -43,15 +47,17 @@ class MagoEnemigo (Identidad):
 
     def perseguir(self, identidad):
 
+        #distancia hasta el jugador
         difX = abs(identidad.x - self.x)
         difX -= self.hitAncho/2 if identidad.x > self.x else identidad.hitAncho/2
-        #umbral = 50
         distancia_ataque = 0
 
+        #ataque
         if difX <= distancia_ataque or self.atacando:
-            
             self.atacar()
             self.velocidadX = 0
+        
+        #persecucion
         else:
             if self.x > identidad.x: 
                 self.velocidadX = -self.velocidadMax
@@ -63,14 +69,19 @@ class MagoEnemigo (Identidad):
     def atacar(self):
         self.tiempo_ataque += 1
         if not self.atacando:
+            #primer ataque tras "pasear"
             if self.tiempo_ataque >= self.tiempo_ataque_max:
                 self.direccion_antes_ataque = self.direccion_actual
                 self.tiempo_ataque = 0
+            #ataque al alcanzar al jugador
+            self.current_sprite_index = 1
+            self.current_sprite_aux = 0
             self.direccion_actual = 'atackdown'
             self.atacando = True
 
+        #desactivar el estado de ataque si ha pasado el tiempo máximo permitido
         if self.atacando and (self.tiempo_ataque) >= self.tiempo_ataque_max:
-            self.atacando = False # desactivar el estado de ataque si ha pasado el tiempo máximo permitido
+            self.atacando = False 
             self.paseando = True
             if self.direccion_actual == 'atackdown':
                 self.direccion_actual = 'front'
@@ -84,6 +95,6 @@ class MagoEnemigo (Identidad):
                 self.current_sprite = self.sprites[self.direccion_actual][int(self.current_sprite_index)]
     
     def spawneo(self):
-        if(int(self.current_sprite_index) != self.current_sprite_aux and self.current_sprite_aux ==8):
+        if(int(self.current_sprite_index) != self.current_sprite_aux and self.current_sprite_aux == 8):
             self.spaw = False
         self.current_sprite_aux = int(self.current_sprite_index)

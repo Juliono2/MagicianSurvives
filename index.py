@@ -155,11 +155,13 @@ while True:
 
     #Disparo de magos enemigos
     for i in magosenemigos:
-        if(int(i.current_sprite_index) != i.current_sprite_aux and i.atacando and i.current_sprite_aux ==0):
-            bolaF = BolaFuego(i)
-            fuegoEnemigo.append(bolaF)
-            bolaF.reproducirSonido(ENEMY_MAGICIAN_SOUNDS[0])
-            i.atacando = False
+        if(int(i.current_sprite_index) != i.current_sprite_aux and i.atacando):
+            if (i.current_sprite_aux == 0):
+                bolaF = BolaFuego(i)
+                fuegoEnemigo.append(bolaF)
+                bolaF.reproducirSonido(ENEMY_MAGICIAN_SOUNDS[0])
+            elif (i.current_sprite_aux == 1):
+                i.atacando = False
         i.current_sprite_aux = int(i.current_sprite_index)
     
     #Disparos del Mago

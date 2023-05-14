@@ -1,6 +1,7 @@
 import pygame, os
 
 pygame.mixer.init()
+pygame.font.init()
 
 #Fondo
 BACKGROUND = pygame.image.load(os.path.join('assets','Sprites','Background','Background.png'))
@@ -120,6 +121,11 @@ BOLA_FUEGO_SPRITE={
     'atackright':[FIREDE0,FIREDE1,FIREDE2,FIREDE3],
     'atackleft':[FIREIZ0,FIREIZ1,FIREIZ2,FIREIZ3]
 }
+
+#---------------------------------------------
+#FUENTES
+
+FUENTE = pygame.font.Font(os.path.join('assets','Fuente','super_smash.ttf'),20)
 
 #---------------------------------------------
 # SONIDOS

@@ -14,15 +14,6 @@ pygame.mixer.init()
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Magician Survives")
 
-# Crear instancia del mago
-mago = Mago()
-
-fuego = []
-magosenemigos = []
-soldadosenemigos = []
-fuegoEnemigo = []
-
-space_key_down = False
 
 #region
 MAGICIAN_FRONT.convert_alpha()
@@ -38,32 +29,46 @@ MAGICIAN_ATACK_IZ1.convert_alpha()
 MAGICIAN_WALK_IZ2.convert_alpha() 
 #endregion
 
-#Constanes Spaw
-spawmago = 5000
-spawSoldao = 5000
-
-#Variables Spaw
-timeMago = spawmago
-ultimoMago = 0
-timeSoldao = spawSoldao
-ultimoSoldao = 0
-
 #Musiquita
 pygame.mixer.music.play(-1)
-DERROTA = pygame.USEREVENT+1
+DERROTA = pygame.USEREVENT + 1
 
-#Score
-score = 0
-enemigos = 0
-inicio = pygame.time.get_ticks()
+def inicializar():
+    print("popo")
+    global mago,fuego,magosenemigos,soldadosenemigos,fuegoEnemigo
+    global ultimoMago,ultimoSoldao,timeSoldao,timeMago
+    global space_key_down,score, enemigos, inicio, perdiste
+    # Crear instancia del mago
+    mago = Mago()
+
+    fuego = []
+    magosenemigos = []
+    soldadosenemigos = []
+    fuegoEnemigo = []
+
+    space_key_down = False
+
+    #Variables Spaw
+    timeMago = NIVEL[0]['Spaw']
+    ultimoMago = 0
+    timeSoldao = NIVEL[0]['Spaw']
+    ultimoSoldao = 0
+
+    #Score
+    score = 0
+    enemigos = 0
+    inicio = pygame.time.get_ticks()
 
 #Variable Derrota
 perdiste = False
+
+inicializar()
 
 # Bucle principal
 while True:
 
     reloj = pygame.time.Clock()
+    keys = pygame.key.get_pressed()
 
     # Manejo de eventos
     for event in pygame.event.get():
@@ -73,11 +78,11 @@ while True:
 
         #Derrota
         if (event.type == DERROTA):
+            
             if(CANAL1.get_busy() or CANAL1.get_queue()!=None):
                 break
 
             # Guardar Score
-            score = int((pygame.time.get_ticks() - inicio) / 1000) * int(numpy.sqrt(enemigos)) * mago.nivel * mago.nivel
             scores = []
 
             with open("highscore.txt","r") as file:
@@ -95,10 +100,16 @@ while True:
                     file.write("Score = " + (str)(scr) + "\n")
 
             #Salir
-            pygame.quit()
-            quit()
 
-    if(perdiste): continue
+    if(perdiste): 
+        
+        i = 0
+        if(keys[pygame.K_RETURN]):
+            inicializar()
+            #Musiquita
+            pygame.mixer.music.play(-1)
+            perdiste = False        
+        continue
 
     #Spaw enemigos
     if(timeMago - ultimoMago >= NIVEL[mago.nivel]['Spaw']):
@@ -114,9 +125,6 @@ while True:
         soldadosenemigos.append(Soldado(mago))
     else:
         timeSoldao = pygame.time.get_ticks()
-
-    # Obtener el estado actual del teclado
-    keys = pygame.key.get_pressed()
 
     # Mover al mago según la tecla presionada
     if keys[pygame.K_RIGHT]:
@@ -174,6 +182,7 @@ while True:
                 magosenemigos.remove(j)
                 enemigos += 1
                 mago.enemigosDerrotados += 1
+                score += int(((pygame.time.get_ticks() - inicio) / 1000)**(1/3)) * (mago.nivel + 1)
                 break
 
         
@@ -184,6 +193,8 @@ while True:
                 soldadosenemigos.remove(j)
                 enemigos += 1
                 mago.enemigosDerrotados += 1
+                print(int(((pygame.time.get_ticks() - inicio) / 1000)**(1/3)))
+                score += int(((pygame.time.get_ticks() - inicio) / 1000)**(1/3)) * (mago.nivel + 1)
                 break
 
     # Ataques Enemigos
@@ -212,6 +223,14 @@ while True:
     pantalla.blit(NUBE,(0,65))
     pantalla.blit(NUBE,(266,65))
     pantalla.blit(NUBE,(533,65))
+    pantalla.blit(FUENTE.render('NIVEL :', True, (0,0,0)),(10,10))
+    pantalla.blit(FUENTE.render(f'{mago.nivel + 1}', True, (0,0,0)),(90,10))
+    pantalla.blit(FUENTE.render('ENEMYS :', True, (0,0,0)),(200,10))
+    pantalla.blit(FUENTE.render(f'{enemigos}', True, (0,0,0)),(310,10))
+    pantalla.blit(FUENTE.render('TIME :', True, (0,0,0)),(400,10))
+    pantalla.blit(FUENTE.render(f'{int((pygame.time.get_ticks() - inicio)/1000)}', True, (0,0,0)),(510,10))
+    pantalla.blit(FUENTE.render('SCORE :', True, (0,0,0)),(600,10))
+    pantalla.blit(FUENTE.render(f'{score}', True, (0,0,0)),(710,10))
 
     pantalla.blit(mago.current_sprite, mago.rect())
     for i in magosenemigos:

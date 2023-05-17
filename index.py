@@ -34,7 +34,6 @@ pygame.mixer.music.play(-1)
 DERROTA = pygame.USEREVENT + 1
 
 def inicializar():
-    print("popo")
     global mago,fuego,magosenemigos,soldadosenemigos,fuegoEnemigo
     global ultimoMago,ultimoSoldao,timeSoldao,timeMago
     global space_key_down,score, enemigos, inicio, perdiste
@@ -193,7 +192,6 @@ while True:
                 soldadosenemigos.remove(j)
                 enemigos += 1
                 mago.enemigosDerrotados += 1
-                print(int(((pygame.time.get_ticks() - inicio) / 1000)**(1/3)))
                 score += int(((pygame.time.get_ticks() - inicio) / 1000)**(1/3)) * (mago.nivel + 1)
                 break
 
@@ -220,17 +218,23 @@ while True:
 
     # Dibujar en pantalla
     pantalla.blit(BACKGROUND,(0,0))
-    pantalla.blit(NUBE,(0,65))
-    pantalla.blit(NUBE,(266,65))
-    pantalla.blit(NUBE,(533,65))
-    pantalla.blit(FUENTE.render('NIVEL :', True, (0,0,0)),(10,10))
+    pantalla.blit(NUBE,(9,65))
+    pantalla.blit(NUBE,(275,65))
+    pantalla.blit(NUBE,(541,65))
+    pantalla.blit(FUENTE.render('LEVEL :', True, (0,0,0)),(10,10))
     pantalla.blit(FUENTE.render(f'{mago.nivel + 1}', True, (0,0,0)),(90,10))
-    pantalla.blit(FUENTE.render('ENEMYS :', True, (0,0,0)),(200,10))
+    pantalla.blit(FUENTE.render('ENEMIES :', True, (0,0,0)),(200,10))
     pantalla.blit(FUENTE.render(f'{enemigos}', True, (0,0,0)),(310,10))
     pantalla.blit(FUENTE.render('TIME :', True, (0,0,0)),(400,10))
     pantalla.blit(FUENTE.render(f'{int((pygame.time.get_ticks() - inicio)/1000)}', True, (0,0,0)),(510,10))
     pantalla.blit(FUENTE.render('SCORE :', True, (0,0,0)),(600,10))
     pantalla.blit(FUENTE.render(f'{score}', True, (0,0,0)),(710,10))
+    pygame.draw.line(pantalla,(0,0,0),(9,0),(9,ALTO))
+    pygame.draw.line(pantalla,(0,0,0),(259,0),(259,ALTO))
+    pygame.draw.line(pantalla,(0,0,0),(275,0),(275,ALTO))
+    pygame.draw.line(pantalla,(0,0,0),(525,0),(525,ALTO))
+    pygame.draw.line(pantalla,(0,0,0),(541,0),(541,ALTO))
+    pygame.draw.line(pantalla,(0,0,0),(791,0),(791,ALTO))
 
     pantalla.blit(mago.current_sprite, mago.rect())
     for i in magosenemigos:

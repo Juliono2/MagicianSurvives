@@ -20,7 +20,7 @@ class Soldado(Identidad):
         self.tiempo_ataque_max = 100
         self.direccion_antes_ataque = 'front'
         self.direccion_actual = 'spaw'
-        self.distancia_ataque = 100
+        self.distancia_ataque = self.velocidadMax * 200
 
     def perseguir(self,identidad):
         self.ciclarSprites()
@@ -37,16 +37,16 @@ class Soldado(Identidad):
         if difX <= self.distancia_ataque:
             
             self.atacar()
-            velocidad = self.velocidadMax*3/2
+            velocidad = self.velocidadMax*2
         else:
             self.atacando = False
 
         if self.x > identidad.x: 
             self.velocidadX = -velocidad
-            self.direccion_actual = "left"
+            self.direccion_actual = self.direccion_actual if self.atacando else "left"
         else:
             self.velocidadX = velocidad
-            self.direccion_actual = "right"
+            self.direccion_actual = self.direccion_actual if self.atacando else "right"
 
         self.x += self.velocidadX
 

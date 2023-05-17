@@ -11,15 +11,16 @@ class BolaFuego (Identidad):
         self.current_sprite_index = 0
         self.velocidadX = 0
         self.velocidadY = 0
+        self.vel = NIVEL[identidad.nivel]['Velocidad'] * 2
 
         if identidad.direccion_actual == 'atackleft':
-            self.velocidadX = -5
+            self.velocidadX = -self.vel
         elif identidad.direccion_actual == 'atackright':
-            self.velocidadX = 5
+            self.velocidadX = self.vel
         elif identidad.direccion_actual == 'atackdown':
-            self.velocidadY = 5
+            self.velocidadY = self.vel
         elif identidad.direccion_actual == 'atackup':
-            self.velocidadY = -5
+            self.velocidadY = -self.vel
 
     def trayectoria(self):
         self.x += self.velocidadX

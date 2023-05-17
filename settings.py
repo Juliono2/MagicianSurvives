@@ -25,3 +25,7 @@ NIVEL = [
     {'Muertes':40   , 'Spaw':3000, 'Velocidad': 1   , 'TiempoFuego': 120},
     {'Muertes':50   , 'Spaw':2000, 'Velocidad': 2   , 'TiempoFuego': 180},
     {'Muertes':10000, 'Spaw':1000, 'Velocidad': 3   , 'TiempoFuego': 250}]
+
+NUBES = {'Ancho' : 250,
+         'Inicio': 9,
+         'EspacioMedio' : 16}

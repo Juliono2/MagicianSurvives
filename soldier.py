@@ -16,10 +16,10 @@ class Soldado(Identidad):
         self.atacando = False
         self.direccion_actual = 'spaw'
         if self.x > identidad.x: 
-            self.velocidadMax = -NIVEL[3]['Velocidad']
+            self.velocidadMax = -NIVEL[identidad.nivel]['Velocidad']
             self.direccion = "left"
         else:
-            self.velocidadMax = NIVEL[3]['Velocidad']
+            self.velocidadMax = NIVEL[identidad.nivel]['Velocidad']
             self.direccion = "right"
         self.distancia_ataque = abs(self.velocidadMax) * 200
 

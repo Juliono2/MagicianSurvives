@@ -1,5 +1,6 @@
 Score = 2430
 Score = 1100
+Score = 317
 Score = 224
 Score = 211
 Score = 181
@@ -7,4 +8,3 @@ Score = 178
 Score = 144
 Score = 99
 Score = 96
-Score = 65

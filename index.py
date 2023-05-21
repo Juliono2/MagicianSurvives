@@ -133,7 +133,7 @@ while True:
     elif keys[pygame.K_UP]:
         mago.mirarArriba()
 
-    if keys[pygame.K_SPACE] and not space_key_down:
+    if keys[pygame.K_SPACE] and not space_key_down and mago.direccion_actual != 'front':
         mago.atacar()
         bolaF = BolaFuego(mago)
         fuego.append(bolaF)

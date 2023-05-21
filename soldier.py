@@ -12,55 +12,45 @@ class Soldado(Identidad):
         self.current_sprite_aux = 0
         self.distancia=DISTANCIA_PRED_SOLDADO_ENEMIGO
         self.velocidadX = 0
-        self.velocidadY = 0
-        self.velocidadMax = NIVEL[identidad.nivel]['Velocidad']
         self.spaw = True
         self.atacando = False
-        self.tiempo_ataque = 0 
-        self.tiempo_ataque_max = 100
-        self.direccion_antes_ataque = 'front'
         self.direccion_actual = 'spaw'
-        self.distancia_ataque = self.velocidadMax * 200
+        if self.x > identidad.x: 
+            self.velocidadMax = -NIVEL[3]['Velocidad']
+            self.direccion = "left"
+        else:
+            self.velocidadMax = NIVEL[3]['Velocidad']
+            self.direccion = "right"
+        self.distancia_ataque = abs(self.velocidadMax) * 200
 
     def perseguir(self,identidad):
         self.ciclarSprites()
         if(self.spaw): 
             self.spawneo()
             return
-
+        print("fin")
         difX = abs(identidad.x - self.x)
         difX -= self.hitAncho/2 if identidad.x > self.x else identidad.hitAncho/2
         #umbral = 50
 
-        velocidad = self.velocidadMax
 
         if difX <= self.distancia_ataque:
-            
             self.atacar()
-            velocidad = self.velocidadMax*2
         else:
             self.atacando = False
-
-        if self.x > identidad.x: 
-            self.velocidadX = -velocidad
-            self.direccion_actual = self.direccion_actual if self.atacando else "left"
-        else:
-            self.velocidadX = velocidad
-            self.direccion_actual = self.direccion_actual if self.atacando else "right"
+            self.velocidadX = self.velocidadMax
+            self.direccion_actual = self.direccion
 
         self.x += self.velocidadX
 
     def atacar(self):
         if(not self.atacando):
-            self.tiempo_ataque = pygame.time.get_ticks()
             atac = random.randint(0,len(LANCER_SOUNDS) - 2)
             self.reproducirSonido(LANCER_SOUNDS[atac])
 
         self.atacando = True
-        if self.direccion_actual == 'left':
-            self.direccion_actual = 'atackleft'
-        elif self.direccion_actual == 'right':
-            self.direccion_actual = 'atackright'
+        self.direccion_actual = 'atack' + self.direccion
+        self.velocidadX = self.velocidadMax*2
         
             
 

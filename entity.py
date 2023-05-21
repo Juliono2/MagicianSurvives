@@ -20,7 +20,8 @@ class Identidad:
             self.y = y
 
     def dibujar(self, pantalla):
-        pantalla.blit(self.current_sprite, self.rect())
+        pantalla.blit(self.current_sprite, self.rect(),pygame.Rect(14,10,20,20))
+        pygame.draw.lines(pantalla,(0,0,0),True,[(self.x,self.y),(self.x,self.y + self.hitAlto),(self.x + self.hitAncho,self.y + self.hitAlto),(self.x + self.hitAncho,self.y)])
     
     def generarPosicion(self, identidad):
         random.seed()

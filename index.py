@@ -144,11 +144,6 @@ while True:
 
 
     # Actualizar estado del mago
-    for i in magosenemigos:
-        i.limites()
-
-    for i in soldadosenemigos:
-        i.limites()
 
     mago.limites()
 

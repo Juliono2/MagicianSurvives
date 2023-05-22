@@ -19,6 +19,7 @@ FPS = 60
 FRAME = 1/FPS
 TIEMPO = FPS/400
 
+#Configuracion de niveles
 NIVEL = [
     {'Muertes':10   , 'Spaw':5000, 'Velocidad': 0.25, 'TiempoFuego': 30},
     {'Muertes':20   , 'Spaw':3000, 'Velocidad': 0.5 , 'TiempoFuego': 60},
@@ -26,6 +27,7 @@ NIVEL = [
     {'Muertes':50   , 'Spaw':2000, 'Velocidad': 2   , 'TiempoFuego': 180},
     {'Muertes':10000, 'Spaw':1000, 'Velocidad': 3   , 'TiempoFuego': 250}]
 
+#Configuracion de nubes
 NUBES = {'Ancho' : 250,
          'Inicio': 9,
          'EspacioMedio' : 16}

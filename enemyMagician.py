@@ -25,22 +25,25 @@ class MagoEnemigo (Identidad):
         self.direccion_antes_ataque = 'left'
         self.direccion_actual = 'spaw'
 
+    #Metodo para genera la posicion ajustado al mago enemigo, pues debe considerar los limites en las nubes 
     def generarPosicion(self, identidad:Identidad):
-        self.limitesNube = [0,0]
-        posx = (identidad.x + identidad.hitAncho/2) - (NUBES['Inicio'] - NUBES['EspacioMedio']//2)
-        nube = 0
+        self.limitesNube = [0,0]        #Establecer los limites
+        posx = (identidad.x + identidad.hitAncho/2) - (NUBES['Inicio'] - NUBES['EspacioMedio']//2)  #Calcula la posicion en el eje x de la nube
+        nube = 0                        #Para luego determinar la nube segun posicion calculada
         if(posx < 0):
             nube = 1
         else:
             nube = posx // (NUBES['Ancho'] + NUBES['EspacioMedio'])
         
+        # Calcular los límites de la nube
         self.limitesNube[0]  = NUBES['Inicio'] + (NUBES['Ancho'] + NUBES['EspacioMedio'])*nube
         self.limitesNube[1]  = NUBES['Inicio'] + (NUBES['Ancho'] + NUBES['EspacioMedio'])*(nube+1) - NUBES['EspacioMedio']
         self.x = self.limitesNube[0] + random.randint(0,250 - self.hitAncho)
 
+    #Metodo para el control de la movilidad 
     def moverse(self, identidad: Identidad):
-        self.ciclarSprites()
-        if(self.spaw): 
+        self.ciclarSprites()        #Efectuamos el ciclado de los sprites
+        if(self.spaw):              
             self.spawneo()
             return
         enRango = ((identidad.x + identidad.hitAncho//2)  >= self.limitesNube[0] and identidad.x + identidad.hitAncho//2 <= self.limitesNube[1])
@@ -56,7 +59,7 @@ class MagoEnemigo (Identidad):
             else:
                 self.velocidadX = self.velocidadMax
 
-            # Verificar si se ha llegado a un límite
+            # Verificar si se ha llegado a un límite en la nube posicionado
             if(self.x - self.velocidadMax < self.limitesNube[0] and self.direccion_antes_ataque == 'left'):
                 self.paseando = False
                 self.direccion_antes_ataque = 'right'
@@ -70,6 +73,7 @@ class MagoEnemigo (Identidad):
         # Actualizar la posición del mago enemigo
         self.x += self.velocidadX
 
+    #Metodo para perseguir identidades
     def perseguir(self, identidad):
 
         #distancia hasta el jugador
@@ -77,7 +81,7 @@ class MagoEnemigo (Identidad):
         difX -= self.hitAncho/2 if identidad.x > self.x else identidad.hitAncho/2
         distancia_ataque = 0
 
-        #ataque
+        #ataque si la diferencia en x es menor a la distancia de ataque o esta en estado atacando
         if difX <= distancia_ataque or self.atacando:
             self.atacar()
             self.velocidadX = 0
@@ -109,17 +113,20 @@ class MagoEnemigo (Identidad):
         if self.atacando and (self.tiempo_ataque) >= self.tiempo_ataque_max:
             self.atacando = False 
             self.paseando = True
+            #cambio de estado de ataque a posicion frontal
             if self.direccion_actual == 'atackdown':
                 self.direccion_actual = 'front'
 
+    #Ciclado de sprites considerando la aparicion
     def ciclarSprites(self):
         if self.direccion_actual in ['right', 'left', 'spaw']:
             return super().ciclarSprites()
-        if self.atacando:
+        if self.atacando:   #Si esta realizando el ataque entonces aumentamos levemente la velocidad de ciclado
             if self.direccion_actual in self.sprites:
                 self.current_sprite_index = (self.current_sprite_index + 0.02) % len(self.sprites[self.direccion_actual])
                 self.current_sprite = self.sprites[self.direccion_actual][int(self.current_sprite_index)]
     
+    #Metodo para el spawneo, este deja de "aparecer" si uso los 9 sprites para aparecer
     def spawneo(self):
         if(int(self.current_sprite_index) != self.current_sprite_aux and self.current_sprite_aux == 8):
             self.spaw = False

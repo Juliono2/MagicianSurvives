@@ -6,18 +6,24 @@ from entity import Identidad
 class Mago(Identidad):
     def __init__(self,identidad=None, sprites=MAGO_SPRITES, x=400, y=300):
         super().__init__(MAGO_SPRITES,identidad, x, y)
+        #Sprites
         self.current_sprite = sprites['front'][0]
         self.current_sprite_index = 0
-        self.caminando = False
+        #Velocidades
         self.velocidadX = 0
         self.velocidadY = 0
         self.velocidadMax = 5
+        #Estados
+        self.caminando = False
         self.atacando = False
+        #Ataque
         self.tiempo_ataque = 0 
         self.tiempo_ataque_max = 100
+        #Nivel
         self.nivel = 0
         self.enemigosDerrotados = 0
 
+    #Metodo para cambiar entre estados normales a estados de ataque
     def atacar(self):
         self.atacando = True
         if self.direccion_actual == 'left':
@@ -26,14 +32,17 @@ class Mago(Identidad):
             self.direccion_actual = 'atackright'
         elif self.direccion_actual == 'up':
             self.direccion_actual = 'atackup'
-        
+        #Calculamos el tiempo de ataque
         self.tiempo_ataque = pygame.time.get_ticks()
 
+    #Metodo para actualizar estados
     def actualizar(self):
+        #Si alcanzamos cierto numero en muertes, entonces aumentamos el nivel
         if(self.enemigosDerrotados >= NIVEL[0]['Muertes']):
             self.enemigosDerrotados = 0
             self.nivel += 1
-            self.reproducirSonido(LEVEL_SOUND)
+            self.reproducirSonido(LEVEL_SOUND)  #Reproducimos el sonido para el aumento de nivel
+
         self.ciclarSprites()
         if abs(self.velocidadX) <= 0.1 and abs(self.velocidadY) <= 0.1:
             if not self.atacando:
@@ -79,11 +88,13 @@ class Mago(Identidad):
         # Aplica el movimiento
         self.x += self.velocidadX
         self.y += self.velocidadY  
-  
+    
+    #Calculo de velocidades
     def calculoVel(self, aceleracionX, aceleracionY):
         self.velocidadX += aceleracionX * FRAME
         self.velocidadY += aceleracionY * FRAME
 
+    #Metodos para la movilidad del mago
     def moverDerecha(self):
         self.direccion_actual = 'right'
         aceleracionX = (self.velocidadMax - self.velocidadX) / TIEMPO
@@ -91,7 +102,7 @@ class Mago(Identidad):
         self.ciclarSprites()
         self.caminando = True
         self.atacando = False
-
+        #Ciclado de sprites mientras camina
         if self.caminando:
             self.current_sprite_index = (self.current_sprite_index + 0.2) % len(self.sprites['right'])
             self.current_sprite = self.sprites['right'][int(self.current_sprite_index)]
@@ -103,11 +114,12 @@ class Mago(Identidad):
         self.ciclarSprites()
         self.caminando = True
         self.atacando = False
-
+        #Ciclado de sprites mientras camina
         if self.caminando:
             self.current_sprite_index = (self.current_sprite_index + 0.2) % len(self.sprites['left'])
             self.current_sprite = self.sprites['left'][int(self.current_sprite_index)]
 
+    #Metodo para mirar arriba, es decir que no afecta el movimiento.
     def mirarArriba(self):
         self.direccion_actual = 'up'
         self.caminando = False

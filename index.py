@@ -2,18 +2,19 @@ import pygame, numpy
 from settings import *
 from routes import *
 
+#Imports de clases contenidas en otros archivos
 from fireBall import BolaFuego
 from magician import Mago
 from enemyMagician import MagoEnemigo
 from soldier import Soldado
 
-pygame.init()
+#Iniciar pygame y el modulo mixer
+pygame.init() 
 pygame.mixer.init()
 
 # Configuración de la ventana
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Magician Survives")
-
 
 #region
 MAGICIAN_FRONT.convert_alpha()
@@ -33,6 +34,7 @@ MAGICIAN_WALK_IZ2.convert_alpha()
 pygame.mixer.music.play(-1)
 DERROTA = pygame.USEREVENT + 1
 
+#Metodo para inicializar variables
 def inicializar():
     global mago,fuego,magosenemigos,soldadosenemigos,fuegoEnemigo
     global ultimoMago,ultimoSoldao,timeSoldao,timeMago
@@ -40,6 +42,7 @@ def inicializar():
     # Crear instancia del mago
     mago = Mago()
 
+    #Arreglos
     fuego = []
     magosenemigos = []
     soldadosenemigos = []
@@ -71,7 +74,7 @@ while True:
 
     # Manejo de eventos
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT: 
             pygame.quit()
             quit()
 
@@ -84,6 +87,7 @@ while True:
             # Guardar Score
             scores = []
 
+            #Abrimos el archivo para su lectura o edicion
             with open("highscore.txt","r") as file:
                 for linea in file:
                     preScore =int(linea.split("=")[1])
@@ -110,7 +114,7 @@ while True:
             perdiste = False        
         continue
 
-    #Spaw enemigos
+    #Spawn enemigos
     if(timeMago - ultimoMago >= NIVEL[mago.nivel]['Spaw']):
         ultimoMago = pygame.time.get_ticks()
         timeMago = 0
@@ -133,6 +137,7 @@ while True:
     elif keys[pygame.K_UP]:
         mago.mirarArriba()
 
+    #Lanzar bola de fuego
     if keys[pygame.K_SPACE] and not space_key_down and mago.direccion_actual != 'front':
         mago.atacar()
         bolaF = BolaFuego(mago)
@@ -142,11 +147,8 @@ while True:
     elif not keys[pygame.K_SPACE]:
         space_key_down = False
 
-
     # Actualizar estado del mago
-
     mago.limites()
-
     
     #Movimiento enemigos
     for i in magosenemigos:
@@ -212,10 +214,14 @@ while True:
     mago.actualizar()
 
     # Dibujar en pantalla
+
+    #Escenario
     pantalla.blit(BACKGROUND,(0,0))
     pantalla.blit(NUBE,(9,65))
     pantalla.blit(NUBE,(275,65))
     pantalla.blit(NUBE,(541,65))
+
+    #Puntuacion
     pantalla.blit(FUENTE.render('LEVEL :', True, (0,0,0)),(10,10))
     pantalla.blit(FUENTE.render(f'{mago.nivel + 1}', True, (0,0,0)),(90,10))
     pantalla.blit(FUENTE.render('ENEMIES :', True, (0,0,0)),(200,10))
@@ -224,13 +230,14 @@ while True:
     pantalla.blit(FUENTE.render(f'{int((pygame.time.get_ticks() - inicio)/1000)}', True, (0,0,0)),(510,10))
     pantalla.blit(FUENTE.render('SCORE :', True, (0,0,0)),(600,10))
     pantalla.blit(FUENTE.render(f'{score}', True, (0,0,0)),(710,10))
-    pygame.draw.line(pantalla,(0,0,0),(9,0),(9,ALTO))
-    pygame.draw.line(pantalla,(0,0,0),(259,0),(259,ALTO))
-    pygame.draw.line(pantalla,(0,0,0),(275,0),(275,ALTO))
-    pygame.draw.line(pantalla,(0,0,0),(525,0),(525,ALTO))
-    pygame.draw.line(pantalla,(0,0,0),(541,0),(541,ALTO))
-    pygame.draw.line(pantalla,(0,0,0),(791,0),(791,ALTO))
+    # pygame.draw.line(pantalla,(0,0,0),(9,0),(9,ALTO))
+    # pygame.draw.line(pantalla,(0,0,0),(259,0),(259,ALTO))
+    # pygame.draw.line(pantalla,(0,0,0),(275,0),(275,ALTO))
+    # pygame.draw.line(pantalla,(0,0,0),(525,0),(525,ALTO))
+    # pygame.draw.line(pantalla,(0,0,0),(541,0),(541,ALTO))
+    # pygame.draw.line(pantalla,(0,0,0),(791,0),(791,ALTO))
 
+    #Identidades
     pantalla.blit(mago.current_sprite, mago.rect())
     for i in magosenemigos:
         pantalla.blit(i.current_sprite, i.rect())

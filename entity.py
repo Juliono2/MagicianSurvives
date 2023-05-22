@@ -26,7 +26,7 @@ class Identidad:
     #Metodo para dibujar en pantalla
     def dibujar(self, pantalla):
         pantalla.blit(self.current_sprite, self.rect(),pygame.Rect(14,10,20,20))
-        pygame.draw.lines(pantalla,(0,0,0),True,[(self.x,self.y),(self.x,self.y + self.hitAlto),(self.x + self.hitAncho,self.y + self.hitAlto),(self.x + self.hitAncho,self.y)])
+        #pygame.draw.lines(pantalla,(0,0,0),True,[(self.x,self.y),(self.x,self.y + self.hitAlto),(self.x + self.hitAncho,self.y + self.hitAlto),(self.x + self.hitAncho,self.y)])
     
     #Genera una posicion aleatoria en x dependiendo el limite y la distancia con la identidad
     def generarPosicion(self, identidad):
